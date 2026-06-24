@@ -74,12 +74,11 @@ export class UsuariosService {
     async findOne(id:string){
         const user = await this.userModel.findById(id).populate('rol_id');
 
-
         if(!user){
-        throw new NotFoundException('Usuario no encontrado')
-
-        return ResponseHelper.success(User,201);
+            throw new NotFoundException('Usuario no encontrado');
         }
+
+        return ResponseHelper.success(user);
     }
 
 
