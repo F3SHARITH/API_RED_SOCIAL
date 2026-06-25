@@ -1,14 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+
+import { IsOptional } from 'class-validator';
 
 export class CreateSeguidorDto {
-  @ApiProperty({ description: 'Identificador del usuario que sigue' })
-  @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   seguidor_id!: string;
 
-  @ApiProperty({ description: 'Identificador del usuario seguido' })
-  @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   seguido_id!: string;
 }

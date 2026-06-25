@@ -43,22 +43,6 @@ export class RolesController {
     }
 
     /**
-
-     * buscar rol por id
-     */
-    @Get(':id')
-    findOne(
-        @Param('id')
-        id: string,
-
-    ){
-        return this.Service.findOne(
-            id,
-        );
-    }
-
-
-    /**
      * actualizar rol por id
      * 
      */

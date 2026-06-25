@@ -19,7 +19,7 @@ export class ComentariosService {
     return ResponseHelper.success(created, 201);
   }
 
-  async findAll(search: SearchComentarioDto) {
+  async findAll(search: SearchComentarioDto = {}) {
     const filter: any = { activo: true };
 
     if (search.texto) {
@@ -68,6 +68,35 @@ export class ComentariosService {
     const updated = await this.comentarioModel.findByIdAndUpdate(id, dto, { new: true });
 
     return ResponseHelper.success(updated, 200);
+  }
+
+  async findInactive() {
+    const comentarios = await this.comentarioModel.find({ activo: false });
+    return ResponseHelper.success(comentarios);
+  }
+
+  async partialUpdate(id: string, dto: UpdateComentarioDto) {
+    const comentario = await this.comentarioModel.findById(id);
+
+    if (!comentario) {
+      throw new NotFoundException('Comentario no encontrado');
+    }
+
+    const updated = await this.comentarioModel.findByIdAndUpdate(id, { $set: dto }, { new: true });
+
+    return ResponseHelper.success(updated, 200);
+  }
+
+  async restore(id: string) {
+    const comentario = await this.comentarioModel.findById(id);
+
+    if (!comentario) {
+      throw new NotFoundException('Comentario no encontrado');
+    }
+
+    const restored = await this.comentarioModel.findByIdAndUpdate(id, { activo: true }, { new: true });
+
+    return ResponseHelper.success(restored, 200);
   }
 
   async remove(id: string) {

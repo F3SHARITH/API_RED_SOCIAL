@@ -1,8 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ComentariosService } from './comentarios.service';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
-import { SearchComentarioDto } from './dto/search-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
 
 @ApiTags('Comentarios')
@@ -16,18 +15,23 @@ export class ComentariosController {
   }
 
   @Get()
-  findAll(@Query() search: SearchComentarioDto) {
-    return this.comentariosService.findAll(search);
+  findAll() {
+    return this.comentariosService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.comentariosService.findOne(id);
+  @Get('inactivos')
+  findInactive() {
+    return this.comentariosService.findInactive();
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() dto: UpdateComentarioDto) {
     return this.comentariosService.update(id, dto);
+  }
+
+  @Patch(':id')
+  partialUpdate(@Param('id') id: string, @Body() dto: UpdateComentarioDto) {
+    return this.comentariosService.partialUpdate(id, dto);
   }
 
   @Delete(':id')

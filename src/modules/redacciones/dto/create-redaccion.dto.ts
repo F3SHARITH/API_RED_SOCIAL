@@ -7,13 +7,13 @@ export class CreateRedaccionDto {
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(100)
-  titulo!: string;
+  publicacion_id!: string;
 
   @ApiProperty({ description: 'Contenido de la redacción' })
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  contenido!: string;
+  tipo_reaccion!: string;
 
   @ApiProperty({ description: 'Identificador del usuario que redacta' })
   @IsString()

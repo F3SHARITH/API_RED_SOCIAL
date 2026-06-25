@@ -1,8 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RedaccionesService } from './redacciones.service';
 import { CreateRedaccionDto } from './dto/create-redaccion.dto';
-import { SearchRedaccionDto } from './dto/search-redaccion.dto';
 import { UpdateRedaccionDto } from './dto/update-redaccion.dto';
 
 @ApiTags('Redacciones')
@@ -16,18 +15,23 @@ export class RedaccionesController {
   }
 
   @Get()
-  findAll(@Query() search: SearchRedaccionDto) {
-    return this.redaccionesService.findAll(search);
+  findAll() {
+    return this.redaccionesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.redaccionesService.findOne(id);
+  @Get('inactivos')
+  findInactive() {
+    return this.redaccionesService.findInactive();
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() dto: UpdateRedaccionDto) {
     return this.redaccionesService.update(id, dto);
+  }
+
+  @Patch(':id')
+  partialUpdate(@Param('id') id: string, @Body() dto: UpdateRedaccionDto) {
+    return this.redaccionesService.partialUpdate(id, dto);
   }
 
   @Delete(':id')

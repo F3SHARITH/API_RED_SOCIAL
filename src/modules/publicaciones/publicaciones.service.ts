@@ -19,7 +19,7 @@ export class PublicacionesService {
     return ResponseHelper.success(created, 201);
   }
 
-  async findAll(search: SearchPublicacionDto) {
+  async findAll(search: SearchPublicacionDto = {}) {
     const filter: any = { activo: true };
 
     if (search.titulo) {
@@ -67,6 +67,35 @@ export class PublicacionesService {
     const updated = await this.publicacionModel.findByIdAndUpdate(id, dto, { new: true });
 
     return ResponseHelper.success(updated, 200);
+  }
+
+  async findInactive() {
+    const publicaciones = await this.publicacionModel.find({ activo: false });
+    return ResponseHelper.success(publicaciones);
+  }
+
+  async partialUpdate(id: string, dto: UpdatePublicacionDto) {
+    const publicacion = await this.publicacionModel.findById(id);
+
+    if (!publicacion) {
+      throw new NotFoundException('Publicación no encontrada');
+    }
+
+    const updated = await this.publicacionModel.findByIdAndUpdate(id, { $set: dto }, { new: true });
+
+    return ResponseHelper.success(updated, 200);
+  }
+
+  async restore(id: string) {
+    const publicacion = await this.publicacionModel.findById(id);
+
+    if (!publicacion) {
+      throw new NotFoundException('Publicación no encontrada');
+    }
+
+    const restored = await this.publicacionModel.findByIdAndUpdate(id, { activo: true }, { new: true });
+
+    return ResponseHelper.success(restored, 200);
   }
 
   async remove(id: string) {

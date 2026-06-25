@@ -8,15 +8,12 @@ export type RedaccionDocument = Redaccion & Document;
 })
 export class Redaccion {
   @Prop({ required: true })
-  titulo!: string;
+  publicacion_id!: string;
 
   @Prop({ required: true })
-  contenido!: string;
+  tipo_reaccion!: string;
 
-  @Prop({
-    type: Types.ObjectId,
-    ref: 'User',
-  })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
   usuario_id!: Types.ObjectId;
 
   @Prop({ default: true })

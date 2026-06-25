@@ -38,7 +38,7 @@ export class UsuariosService {
     /**
      * CONSULTA DE USUARIOS
      */
-    async findAll(search:SearchUserDto) {
+    async findAll(search:SearchUserDto = {}) {
         // crear filtro
         const filter: any = {activo:true};
 
@@ -103,6 +103,47 @@ export class UsuariosService {
             { new: true });
 
         return ResponseHelper.success(updateUser, 200);
+    }
+
+    async findInactive(){
+        const users = await this.userModel.find({activo:false});
+        return ResponseHelper.success(users);
+    }
+
+    async partialUpdate(id:string, dto:UpdateUserDto){
+        const user = await this.userModel.findById(id);
+
+        if(!user){
+            throw new NotFoundException('Usuario no encontrado');
+        }
+
+        if(dto.password){
+            dto.password = await bcrypt.hash(dto.password,10);
+        }
+
+        const updateUser = await this.userModel.findByIdAndUpdate(
+            id,
+            { $set: dto },
+            { new: true }
+        );
+
+        return ResponseHelper.success(updateUser, 200);
+    }
+
+    async restore(id:string){
+        const user = await this.userModel.findById(id);
+
+        if(!user){
+            throw new NotFoundException('Usuario no encontrado');
+        }
+
+        const restoredUser = await this.userModel.findByIdAndUpdate(
+            id,
+            { activo: true },
+            { new: true }
+        );
+
+        return ResponseHelper.success(restoredUser, 200);
     }
 
     /**

@@ -1,8 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SeguidoresService } from './seguidores.service';
 import { CreateSeguidorDto } from './dto/create-seguidor.dto';
-import { SearchSeguidorDto } from './dto/search-seguidor.dto';
 
 @ApiTags('Seguidores')
 @Controller('seguidores')
@@ -15,13 +14,18 @@ export class SeguidoresController {
   }
 
   @Get()
-  findAll(@Query() search: SearchSeguidorDto) {
-    return this.seguidoresService.findAll(search);
+  findAll() {
+    return this.seguidoresService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.seguidoresService.findOne(id);
+  @Get('inactivos')
+  findInactive() {
+    return this.seguidoresService.findInactive();
+  }
+
+  @Patch(':id')
+  partialUpdate(@Param('id') id: string, @Body() dto: CreateSeguidorDto) {
+    return this.seguidoresService.partialUpdate(id, dto);
   }
 
   @Delete(':id')
